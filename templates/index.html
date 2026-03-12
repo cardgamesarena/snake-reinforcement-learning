@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Snake DQN</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Snake — Deep Q-Learning</h1>
+    <span id="connection-status" class="badge badge-disconnected">Déconnecté</span>
+  </header>
+
+  <main class="main-layout">
+
+    <!-- ── Game panel ── -->
+    <section class="panel game-panel">
+      <h2>Partie en cours</h2>
+      <canvas id="gameCanvas" width="320" height="320"></canvas>
+      <div class="game-stats">
+        <span>Score&nbsp;: <strong id="livScore">0</strong></span>
+        <span>Pas&nbsp;: <strong id="livSteps">0</strong></span>
+      </div>
+
+      <!-- Legend -->
+      <div class="legend">
+        <span class="dot dot-head"></span> Tête
+        <span class="dot dot-body"></span> Corps
+        <span class="dot dot-food"></span> Nourriture
+      </div>
+    </section>
+
+    <!-- ── Controls + Metrics panel ── -->
+    <section class="panel control-panel">
+      <h2>Contrôles</h2>
+      <div class="controls">
+        <button id="btnStart" class="btn btn-primary">▶ Démarrer</button>
+        <button id="btnPause" class="btn btn-secondary" disabled>⏸ Pause</button>
+        <button id="btnReset" class="btn btn-danger">↺ Réinitialiser</button>
+      </div>
+
+      <div class="speed-control">
+        <label for="speedSlider">Visualisation</label>
+        <input type="range" id="speedSlider" min="1" max="50" value="3" />
+        <span id="speedLabel">Toutes les 3 épisodes</span>
+      </div>
+
+      <h2>Métriques</h2>
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <span class="metric-label">Épisode</span>
+          <span class="metric-value" id="mEpisode">0</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Score</span>
+          <span class="metric-value" id="mScore">0</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Epsilon (ε)</span>
+          <span class="metric-value" id="mEpsilon">1.0000</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Perte</span>
+          <span class="metric-value" id="mLoss">—</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Moy. 100 épisodes</span>
+          <span class="metric-value" id="mMean">0.00</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Statut</span>
+          <span class="metric-value" id="mStatus">Arrêté</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Chart panel ── -->
+    <section class="panel chart-panel">
+      <h2>Progression des scores</h2>
+      <canvas id="scoreChart"></canvas>
+      <p class="chart-note">Affiche les 500 derniers épisodes</p>
+    </section>
+
+  </main>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
