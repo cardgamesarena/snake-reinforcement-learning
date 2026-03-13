@@ -2,5 +2,6 @@ torch==2.9.0
 numpy==1.26.4
 flask==3.0.3
 flask-socketio==5.3.6
-eventlet==0.35.2
+gevent==24.2.1
+gevent-websocket==0.10.1
 gunicorn==22.0.0
