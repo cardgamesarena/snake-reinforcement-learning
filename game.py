@@ -99,15 +99,12 @@ class SnakeGame:
 
         # Wall collision
         if not (0 <= new_r < self.grid_size and 0 <= new_c < self.grid_size):
-            return self.get_state(), -10.0, True
+            return self.get_state(), -100.0, True
 
         # Self collision (check against body excluding tail, which will move)
         body_without_tail = set(list(self.snake)[:-1])
         if (new_r, new_c) in body_without_tail:
-            return self.get_state(), -10.0, True
-
-        # Compute distance to food before moving (for reward shaping)
-        prev_dist = abs(head_r - self.food[0]) + abs(head_c - self.food[1])
+            return self.get_state(), -100.0, True
 
         # Move snake
         self.snake.appendleft((new_r, new_c))
@@ -116,16 +113,15 @@ class SnakeGame:
         if ate_food:
             self.score += 1
             self._place_food()
-            reward = 10.0
+            reward = 100.0
         else:
             self.snake.pop()  # remove tail
-            new_dist = abs(new_r - self.food[0]) + abs(new_c - self.food[1])
-            reward = 0.1 if new_dist < prev_dist else -0.1
+            reward = 0.0
 
         self.steps += 1
 
         # Step limit
         if self.steps >= self.max_steps:
-            return self.get_state(), -1.0, True
+            return self.get_state(), -100.0, True
 
         return self.get_state(), reward, False

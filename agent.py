@@ -58,8 +58,8 @@ class DQNAgent:
         self.batch_size = batch_size
         self.min_buffer = min_buffer
 
-        self.policy_net = DQN(state_size, 256, 128, action_size)
-        self.target_net = DQN(state_size, 256, 128, action_size)
+        self.policy_net = DQN(state_size, 512, 256, 128, action_size)
+        self.target_net = DQN(state_size, 512, 256, 128, action_size)
         self.target_net.load_state_dict(self.policy_net.state_dict())
         self.target_net.eval()
 
