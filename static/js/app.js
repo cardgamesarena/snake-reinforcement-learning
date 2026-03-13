@@ -1,7 +1,7 @@
 'use strict';
 
 // ── Constants ──────────────────────────────────────────────────────────────
-const CELL_SIZE = 80; // 4 * 80 = 320px
+const CELL_SIZE = 40; // 10 * 40 = 400px
 const COLORS = {
   0: '#1a1a2e', // empty
   1: '#4ade80', // body
@@ -15,6 +15,7 @@ const canvas       = document.getElementById('gameCanvas');
 const ctx          = canvas.getContext('2d');
 const btnStart     = document.getElementById('btnStart');
 const btnPause     = document.getElementById('btnPause');
+const btnWatch     = document.getElementById('btnWatch');
 const btnReset     = document.getElementById('btnReset');
 const speedSlider  = document.getElementById('speedSlider');
 const speedLabel   = document.getElementById('speedLabel');
@@ -102,7 +103,7 @@ function drawGrid(grid) {
 }
 
 // Draw initial empty grid
-function drawEmptyGrid(size = 4) {
+function drawEmptyGrid(size = 10) {
   const empty = Array.from({ length: size }, () => Array(size).fill(0));
   drawGrid(empty);
 }
@@ -188,6 +189,11 @@ socket.on('training_status', (data) => {
   setButtonState(data.status);
 });
 
+socket.on('watch_done', () => {
+  btnWatch.disabled = false;
+  btnWatch.textContent = '👁 Regarder';
+});
+
 // ── Controls ──────────────────────────────────────────────────────────────
 btnStart.addEventListener('click', () => {
   socket.emit('start_training', {});
@@ -197,6 +203,12 @@ btnStart.addEventListener('click', () => {
 btnPause.addEventListener('click', () => {
   socket.emit('pause_training', {});
   setButtonState('paused');
+});
+
+btnWatch.addEventListener('click', () => {
+  btnWatch.disabled = true;
+  btnWatch.textContent = '⏳ En cours…';
+  socket.emit('watch_game', {});
 });
 
 btnReset.addEventListener('click', () => {

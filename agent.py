@@ -38,7 +38,7 @@ class ReplayBuffer:
 class DQNAgent:
     def __init__(
         self,
-        state_size: int = 20,
+        state_size: int = 104,
         action_size: int = 4,
         lr: float = 1e-3,
         gamma: float = 0.95,
@@ -58,8 +58,8 @@ class DQNAgent:
         self.batch_size = batch_size
         self.min_buffer = min_buffer
 
-        self.policy_net = DQN(state_size, 128, 64, action_size)
-        self.target_net = DQN(state_size, 128, 64, action_size)
+        self.policy_net = DQN(state_size, 256, 128, action_size)
+        self.target_net = DQN(state_size, 256, 128, action_size)
         self.target_net.load_state_dict(self.policy_net.state_dict())
         self.target_net.eval()
 

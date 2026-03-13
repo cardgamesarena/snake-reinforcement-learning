@@ -2,7 +2,7 @@ import numpy as np
 from collections import deque
 import random
 
-GRID_SIZE = 4
+GRID_SIZE = 10
 EMPTY = 0
 BODY  = 1
 HEAD  = 2

@@ -193,6 +193,34 @@ def handle_speed(data):
     emit_every = max(1, min(50, val))
 
 
+@socketio.on('watch_game')
+def handle_watch(data=None):
+    global game
+    was_running = training_active.is_set()
+    training_active.clear()
+    eventlet.sleep(0.05)  # let training loop pause
+
+    with _lock:
+        state = game.reset()
+    done = False
+    while not done:
+        action = agent.select_action(state)
+        next_state, reward, done = game.step(action)
+        state = next_state
+        with _lock:
+            grid_data = game.get_grid_dict()
+        socketio.emit('game_state', {
+            "grid":  grid_data["grid"],
+            "score": grid_data["score"],
+            "steps": grid_data["steps"],
+        })
+        eventlet.sleep(0.12)
+
+    socketio.emit('watch_done', {})
+    if was_running:
+        training_active.set()
+
+
 @socketio.on('ping_keepalive')
 def handle_ping(data=None):
     pass  # just keep the connection alive
